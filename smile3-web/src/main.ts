@@ -358,6 +358,18 @@ async function main(): Promise<void> {
   $("restartBtn").addEventListener("click", () => void loadLevel(current));
   $("starveBtn").addEventListener("click", () => active().suicide(0));
 
+  // Startup jingle (VB played welcome.wav on the launch form). Browsers gate
+  // audio behind user interaction, so try immediately and again on first input.
+  let welcomed = false;
+  const welcome = () => {
+    if (welcomed) return;
+    welcomed = true;
+    sounds.play("welcome");
+  };
+  window.addEventListener("pointerdown", welcome);
+  window.addEventListener("keydown", welcome);
+  welcome();
+
   await loadLevel("Level0");
 }
 
