@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { dDOWN, dLEFT, dRIGHT, dUP, BRICK, DOOR, KEY, MONEY, NOWT, SMILE } from "../src/constants";
 import { Engine } from "../src/engine";
+import { parseLevelText } from "../src/level-format";
+import { readLevel } from "./fixtures";
 import type { ParsedLevel } from "../src/level-format";
 
 function toyLevel(): ParsedLevel {
@@ -153,5 +155,27 @@ describe("engine movement", () => {
     const eng = engineWith();
     eng.blnArrow[0] = false;
     expect(eng.press(0, dUP)).toBe(false);
+  });
+
+  it("Level22 warp lands on its real destination and frees input", () => {
+    // Regression: moveThing read the dest Y through the already-overwritten
+    // dest X, teleporting the follow-up move to (1,0) and leaving blnArrow
+    // false forever. Real scenario: (15,7) -UP-> warp (15,6) -> (1,2).
+    const text = readLevel("Level22.txt");
+    const eng = engineWith(parseLevelText(text));
+    // Walk the smile to below the warp: clear start, place at (15,7).
+    eng.move[1]![7] = { value: NOWT, extra1: 0, extra2: 0, extra3: 0 };
+    eng.move[15]![7] = { value: SMILE, extra1: 0, extra2: 0, extra3: 0 };
+    eng.smileX[0] = 15;
+    eng.smileY[0] = 7;
+    eng.viewX[0] = 15;
+    eng.viewY[0] = 7;
+    expect(eng.press(0, dUP)).toBe(true);
+    eng.tick(); // warp fires: (15,6) -> (1,2), auto-step UP onto the twoway
+    expect([eng.smileX[0], eng.smileY[0]]).toEqual([1, 1]);
+    eng.tick(); // twoway slides the smile RIGHT to (2,1), input restored
+    expect([eng.smileX[0], eng.smileY[0]]).toEqual([2, 1]);
+    expect(eng.blnArrow[0]).toBe(true);
+    expect(eng.press(0, dRIGHT)).toBe(true);
   });
 });

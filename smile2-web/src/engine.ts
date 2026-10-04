@@ -1110,8 +1110,11 @@ export class Engine {
       }
       this.warpThing(x, y, this.perm[x]![y]!.extra1, this.perm[x]![y]!.extra3);
       if (putWater) this.move[x]![y]!.value = WATER;
-      x = this.perm[x]![y]!.extra1;
-      y = this.perm[x]![y]!.extra3;
+      // NB: read both coords before assigning (VB used newx/newy temps).
+      const destX = this.perm[x]![y]!.extra1;
+      const destY = this.perm[x]![y]!.extra3;
+      x = destX;
+      y = destY;
     }
     if (!this.moveObjectCheck(x, y, movType, newDir) && objType !== WARP) {
       if (this.moveObjectCheck(x, y, movType, oppositeD(dir))) {
