@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smile Game III — Web Remake</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1>Smile Game III — Web Remake</h1>
+        <div id="toolbar">
+          <label>Level
+            <select id="levelSelect"></select>
+          </label>
+          <button id="loadBtn">Load</button>
+          <button id="restartBtn">Restart (R)</button>
+          <button id="suicideBtn">Suicide (End)</button>
+          <span id="fps">FPS: 0</span>
+        </div>
+      </header>
+      <main>
+        <div id="boards">
+          <section id="boardWrap0" class="board-wrap">
+            <h2 id="playerLabel0">Player 1</h2>
+            <canvas id="board0" width="416" height="416"></canvas>
+            <div class="hud">
+              <span id="score0">$0</span>
+              <span id="energy0">0 Kj</span>
+              <span id="lives0">3 ❤</span>
+              <span id="shield0">0S 🛡</span>
+              <span id="keys0"></span>
+            </div>
+          </section>
+          <section id="boardWrap1" class="board-wrap hidden">
+            <h2 id="playerLabel1">Player 2</h2>
+            <canvas id="board1" width="416" height="416"></canvas>
+            <div class="hud">
+              <span id="score1">$0</span>
+              <span id="energy1">0 Kj</span>
+              <span id="lives1">3 ❤</span>
+              <span id="shield1">0S 🛡</span>
+              <span id="keys1"></span>
+            </div>
+          </section>
+        </div>
+        <aside id="side">
+          <div id="message"></div>
+          <div id="whatsthere"></div>
+          <h3>Controls</h3>
+          <ul>
+            <li>P1: Arrows move · End suicide · ScrollLock follow/pan</li>
+            <li>P2: A/W/S/Z move · Esc suicide · Space follow/pan</li>
+            <li>Click a neighbour tile to step · Right-click a tile to inspect</li>
+            <li>R restart level · gravity pulls things down, balloons rise</li>
+          </ul>
+          <h3>Popups</h3>
+          <div id="popups"></div>
+        </aside>
+      </main>
+      <section id="subWrap" class="hidden">
+        <h2 id="subTitle">Sublevel</h2>
+        <canvas id="boardSub" width="416" height="416"></canvas>
+        <div class="hud">
+          <span id="scoreSub">$0</span>
+          <span id="energySub">0 Kj</span>
+          <span id="livesSub">1 ❤</span>
+          <span id="shieldSub">0S 🛡</span>
+          <span id="keysSub"></span>
+        </div>
+        <div id="subMessage"></div>
+      </section>
+      <div id="tollModal" class="hidden">
+        <div id="tollBox">
+          <p id="tollText"></p>
+          <button id="tollPay">Pay</button>
+          <button id="tollDecline">Don't pay</button>
+        </div>
+      </div>
+      <footer>
+        <small>Faithful port of the VB6 original. Assets converted BMP→PNG, WAV→OGG.</small>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

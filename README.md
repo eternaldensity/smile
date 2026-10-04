@@ -9,6 +9,7 @@ One repo, one GitHub Pages site; each game lives under its own path
 ```
 index.html                  landing page (static, links to each game)
 smile2-web/                 Smile Game II remake (standalone Vite + TS app)
+smile3-web/                 Smile Game III remake (standalone Vite + TS app)
   src/ tests/ public/ …
 .github/workflows/deploy.yml  builds every *-web app, assembles one site
 ```

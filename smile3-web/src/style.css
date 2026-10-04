@@ -1,0 +1,29 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #111; color: #eee; }
+#app { max-width: 1100px; margin: 0 auto; padding: 12px; }
+header h1 { font-size: 1.3rem; margin: 0 0 8px; }
+#toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+main { display: flex; gap: 16px; }
+#boards { display: flex; gap: 16px; }
+.board-wrap canvas { background: #fff; image-rendering: pixelated; border: 2px solid #444; }
+.board-wrap.hidden { display: none; }
+.hud { display: flex; gap: 12px; margin-top: 6px; font-variant-numeric: tabular-nums; }
+#side { max-width: 320px; }
+#message { min-height: 2em; margin-bottom: 8px; color: #ffd75e; }
+#whatsthere { min-height: 1.5em; margin-bottom: 8px; color: #9fd3ff; }
+.hidden { display: none; }
+#subWrap {
+  position: fixed; inset: 0; margin: auto; width: fit-content; height: fit-content;
+  background: #1a1a1a; border: 2px solid #888; border-radius: 10px; padding: 16px;
+  z-index: 10;
+}
+#subWrap canvas { background: #fff; image-rendering: pixelated; border: 2px solid #444; }
+#subMessage { min-height: 1.5em; color: #ffd75e; margin-top: 6px; }
+#tollModal {
+  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 20;
+  display: flex; align-items: center; justify-content: center;
+}
+#tollModal.hidden { display: none; }
+#tollBox { background: #222; border: 1px solid #888; border-radius: 8px; padding: 20px; text-align: center; }
+#tollBox button { margin: 0 6px; padding: 6px 14px; }

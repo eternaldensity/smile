@@ -23,7 +23,9 @@ jobs:
         with:
           node-version: 22
           cache: npm
-          cache-dependency-path: smile2-web/package-lock.json
+          cache-dependency-path: |
+            smile2-web/package-lock.json
+            smile3-web/package-lock.json
 
       - name: Build smile2
         working-directory: smile2-web
@@ -32,11 +34,19 @@ jobs:
           npm test
           npm run build
 
+      - name: Build smile3
+        working-directory: smile3-web
+        run: |
+          npm ci
+          npm test
+          npm run build
+
       - name: Assemble site
         run: |
-          mkdir -p site/smile2
+          mkdir -p site/smile2 site/smile3
           cp index.html site/index.html
           cp -r smile2-web/dist/* site/smile2/
+          cp -r smile3-web/dist/* site/smile3/
 
       - uses: actions/upload-pages-artifact@v3
         with:
