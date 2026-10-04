@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Game — Web Remake</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <nav><a id="homeLink" href="../">← All games</a></nav>
+        <h1>Space Game — Web Remake</h1>
+        <div id="toolbar">
+          <label>Level
+            <select id="levelSelect"></select>
+          </label>
+          <button id="loadBtn">Load</button>
+          <button id="muteBtn">Mute</button>
+          <span id="fps">FPS: 0</span>
+        </div>
+      </header>
+      <main>
+        <div id="boards">
+          <section class="board-wrap">
+            <canvas id="board" width="384" height="384"></canvas>
+            <div class="hud">
+              <span id="levelLabel"></span>
+            </div>
+          </section>
+        </div>
+        <aside id="side">
+          <div id="message"></div>
+          <h3>Controls</h3>
+          <ul>
+            <li>Arrows set the ship sliding — it keeps going until blocked</li>
+            <li>Get the ship to the door · avoid enemies and metal</li>
+            <li>R restarts the level</li>
+          </ul>
+        </aside>
+      </main>
+      <footer>
+        <small>Faithful port of the VB6 original. Sprites redrawn, sounds synthesized — no original assets survived except the starfield.</small>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
