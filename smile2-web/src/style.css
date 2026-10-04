@@ -1,0 +1,15 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #111; color: #eee; }
+#app { max-width: 1100px; margin: 0 auto; padding: 12px; }
+header h1 { font-size: 1.3rem; margin: 0 0 8px; }
+#toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+main { display: flex; gap: 16px; }
+#boards { display: flex; gap: 16px; }
+.board-wrap canvas { background: #fff; image-rendering: pixelated; border: 2px solid #444; }
+.board-wrap.hidden { display: none; }
+.hud { display: flex; gap: 12px; margin-top: 6px; font-variant-numeric: tabular-nums; }
+#side { max-width: 320px; }
+#message { min-height: 2em; margin-bottom: 8px; color: #ffd75e; }
+#whatsthere { min-height: 1.5em; margin-bottom: 8px; color: #9fd3ff; }
+.hidden { display: none; }

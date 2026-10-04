@@ -1,0 +1,10 @@
+# Build / dep outputs
+node_modules/
+dist/
+site/
+
+# VB originals — local source material, not part of the site
+smile2/
+smile3/
+space/
+space2/
