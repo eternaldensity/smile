@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Penguin Game — Web Remake</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <nav><a id="homeLink" href="../">← All games</a></nav>
+        <h1>Penguin Game — Web Remake</h1>
+        <div id="toolbar">
+          <label>Level
+            <select id="levelSelect"></select>
+          </label>
+          <button id="loadBtn">Load</button>
+          <button id="muteBtn">Mute</button>
+          <span id="fps">FPS: 0</span>
+        </div>
+      </header>
+      <main>
+        <div id="boards">
+          <section class="board-wrap">
+            <canvas id="board" width="384" height="384"></canvas>
+            <div class="hud" id="penguins"></div>
+            <div class="hud">
+              <span id="bolts"></span>
+              <span id="home"></span>
+            </div>
+          </section>
+        </div>
+        <aside id="side">
+          <div id="message"></div>
+          <h3>Controls</h3>
+          <ul>
+            <li>WASD moves Zidgel · IJKL moves Midgel · Arrows move Fidgel</li>
+            <li>Collect every bolt, then bring all penguins home to the ship</li>
+            <li>R restarts the level · right-click a cell to inspect it</li>
+          </ul>
+          <h3>Hint</h3>
+          <div id="hint"></div>
+        </aside>
+      </main>
+      <footer>
+        <small>Faithful port of the VB6 original, running on the real sprites and sounds.</small>
+      </footer>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

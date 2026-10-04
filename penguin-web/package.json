@@ -1,0 +1,23 @@
+{
+  "name": "penguin-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Modern web remake of Penguin Game (VB6). TypeScript + Canvas.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "convert-assets": "node scripts/convert-assets.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
+  }
+}

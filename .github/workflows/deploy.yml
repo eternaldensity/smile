@@ -27,6 +27,7 @@ jobs:
             smile2-web/package-lock.json
             smile3-web/package-lock.json
             space-web/package-lock.json
+            penguin-web/package-lock.json
 
       - name: Build smile2
         working-directory: smile2-web
@@ -49,13 +50,21 @@ jobs:
           npm test
           npm run build
 
+      - name: Build penguin
+        working-directory: penguin-web
+        run: |
+          npm ci
+          npm test
+          npm run build
+
       - name: Assemble site
         run: |
-          mkdir -p site/smile2 site/smile3 site/space
+          mkdir -p site/smile2 site/smile3 site/space site/penguin
           cp index.html site/index.html
           cp -r smile2-web/dist/* site/smile2/
           cp -r smile3-web/dist/* site/smile3/
           cp -r space-web/dist/* site/space/
+          cp -r penguin-web/dist/* site/penguin/
 
       - uses: actions/upload-pages-artifact@v3
         with:

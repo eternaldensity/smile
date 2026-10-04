@@ -1,0 +1,18 @@
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; background: #111; color: #eee; }
+#app { max-width: 1100px; margin: 0 auto; padding: 12px; }
+header h1 { font-size: 1.3rem; margin: 0 0 8px; }
+#homeLink { font-size: 0.9rem; color: #9fd3ff; text-decoration: none; }
+#homeLink:hover { text-decoration: underline; }
+#toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+main { display: flex; gap: 16px; }
+.board-wrap canvas { background: #000; image-rendering: pixelated; border: 2px solid #444; }
+.hud { display: flex; gap: 12px; margin-top: 6px; font-variant-numeric: tabular-nums; align-items: center; }
+.penguin { display: inline-flex; gap: 4px; align-items: center; border: 1px solid #444; border-radius: 6px; padding: 2px 6px; }
+.penguin img { width: 22px; height: 22px; image-rendering: pixelated; }
+.penguin.out { opacity: 0.4; }
+#side { max-width: 320px; }
+#message { min-height: 2em; margin-bottom: 8px; color: #ffd75e; white-space: pre-line; }
+#hint { color: #aaa; font-size: 0.9rem; white-space: pre-line; }
+.hidden { display: none; }

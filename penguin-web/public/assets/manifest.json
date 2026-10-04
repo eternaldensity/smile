@@ -1,0 +1,35 @@
+{
+  "sprites": {
+    "0sign.ico": "assets/sprites/0sign.png",
+    "1sign.ico": "assets/sprites/1sign.png",
+    "2lock.ico": "assets/sprites/2lock.png",
+    "2sign.ico": "assets/sprites/2sign.png",
+    "3sign.ico": "assets/sprites/3sign.png",
+    "Fidgel.bmp": "assets/sprites/fidgel.png",
+    "Lock.ico": "assets/sprites/lock.png",
+    "MidgelL.bmp": "assets/sprites/midgell.png",
+    "MidgelR.bmp": "assets/sprites/midgelr.png",
+    "SealL.BMP": "assets/sprites/seall.png",
+    "SealR.BMP": "assets/sprites/sealr.png",
+    "ZidgelL.bmp": "assets/sprites/zidgell.png",
+    "ZidgelR.bmp": "assets/sprites/zidgelr.png",
+    "ball.BMP": "assets/sprites/ball.png",
+    "bang.BMP": "assets/sprites/bang.png",
+    "bolt.BMP": "assets/sprites/bolt.png",
+    "brick.BMP": "assets/sprites/brick.png",
+    "flippers.BMP": "assets/sprites/flippers.png",
+    "ladder.BMP": "assets/sprites/ladder.png",
+    "panel.BMP": "assets/sprites/panel.png",
+    "ship2.BMP": "assets/sprites/ship2.png",
+    "sign.ico": "assets/sprites/sign.png",
+    "warp.BMP": "assets/sprites/warp.png",
+    "water.bmp": "assets/sprites/water.png",
+    "wood.BMP": "assets/sprites/wood.png"
+  },
+  "sounds": {
+    "bang.wav": "assets/sounds/bang.ogg",
+    "bigsplash.wav": "assets/sounds/bigsplash.ogg",
+    "thump.wav": "assets/sounds/thump.ogg",
+    "warp.wav": "assets/sounds/warp.ogg"
+  }
+}
