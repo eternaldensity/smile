@@ -56,6 +56,14 @@ describe("engine basics", () => {
     expect([eng.smileX[0], eng.smileY[0]]).toEqual([3, 2]);
   });
 
+  it("keeps the camera on the smile after stepping", () => {
+    const eng = engineWith();
+    eng.viewX[0] = 0;
+    eng.viewY[0] = 0; // stale camera
+    expect(eng.press(0, dRIGHT)).toBe(true);
+    expect([eng.viewX[0], eng.viewY[0]]).toEqual([eng.smileX[0], eng.smileY[0]]);
+  });
+
   it("gravity drops unsupported objects", () => {
     const t = toyLevel();
     t.perm[2]![3] = { value: LADDER, extra1: 0, extra2: 0, extra3: 0 };

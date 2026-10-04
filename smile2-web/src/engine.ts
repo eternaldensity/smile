@@ -197,7 +197,14 @@ export class Engine {
       return false;
     }
     if (!this.blnArrow[s]) return false;
-    return this.moveObjectCheck(this.smileX[s]!, this.smileY[s]!, SMILE, dir);
+    const ok = this.moveObjectCheck(this.smileX[s]!, this.smileY[s]!, SMILE, dir);
+    // Keep the follow-camera glued to the smile so the next painted frame
+    // already uses the new viewport (VB did this in Draw; we draw on demand).
+    if (ok && this.blnView[s]) {
+      this.viewX[s] = this.smileX[s]!;
+      this.viewY[s] = this.smileY[s]!;
+    }
+    return ok;
   }
 
   toggleView(s: number): void {

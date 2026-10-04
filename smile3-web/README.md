@@ -39,8 +39,8 @@ npm run build            # typecheck + production build in dist/
 
 ## Controls
 
-- P1: **Arrows** move · **End** suicide · **ScrollLock** follow/pan
-- P2: **WASD** move · **Esc** suicide · **Space** follow/pan · **Z** also down
+- P1: **Arrows** move (hold to keep moving) · **End** starves (lose a life) · **ScrollLock** follow/pan
+- P2: **WASD** move (hold to keep moving) · **Esc** starves · **Space** follow/pan · **Z** also down
 - **Click** a neighbouring tile to step · **right-click** to inspect
 - **R** restart (restarts the sublevel when inside one)
 - Toll gates open a Pay/Decline dialog (Enter/Esc); the sim pauses meanwhile.

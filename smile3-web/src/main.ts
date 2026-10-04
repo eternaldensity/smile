@@ -1,6 +1,7 @@
 import { SoundBank } from "./audio";
 import { TICK_MS, VIEW_RADIUS, TILE_PX, dDOWN, dLEFT, dRIGHT, dUP, type Direction } from "./constants";
 import { Engine, type SubResult } from "./engine";
+import { shouldMove } from "./input";
 import { parseLevelText, subpathToName } from "./level-format";
 import { renderPlayer } from "./renderer";
 import { loadAllImages, type ImageCache } from "./sprites";
@@ -214,8 +215,9 @@ async function main(): Promise<void> {
       e.preventDefault();
       return;
     }
-    if (e.repeat) {
-      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Space"].includes(e.code)) e.preventDefault();
+    const movement = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyW", "KeyS", "KeyZ", "KeyD"].includes(e.code);
+    if (e.repeat && !movement) {
+      if (e.code === "Space") e.preventDefault();
       return;
     }
     const g = active();
@@ -224,19 +226,19 @@ async function main(): Promise<void> {
     const anyP = sub ? g.numPlayers >= 1 : p1max;
     switch (e.code) {
       case "ArrowLeft":
-        if (anyP) stepOrPan(g, 0, dLEFT);
+        if (anyP) gatedStep(g, 0, dLEFT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowUp":
-        if (anyP) stepOrPan(g, 0, dUP);
+        if (anyP) gatedStep(g, 0, dUP, e.repeat);
         e.preventDefault();
         return;
       case "ArrowRight":
-        if (anyP) stepOrPan(g, 0, dRIGHT);
+        if (anyP) gatedStep(g, 0, dRIGHT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowDown":
-        if (anyP) stepOrPan(g, 0, dDOWN);
+        if (anyP) gatedStep(g, 0, dDOWN, e.repeat);
         e.preventDefault();
         return;
       case "End":
@@ -246,25 +248,25 @@ async function main(): Promise<void> {
         if (anyP) g.toggleView(0);
         return;
       case "KeyA":
-        if (p2max) stepOrPan(g, 1, dLEFT);
-        else if (sub) stepOrPan(g, 0, dLEFT);
+        if (p2max) gatedStep(g, 1, dLEFT, e.repeat);
+        else if (sub) gatedStep(g, 0, dLEFT, e.repeat);
         return;
       case "KeyW":
-        if (p2max) stepOrPan(g, 1, dUP);
-        else if (sub) stepOrPan(g, 0, dUP);
+        if (p2max) gatedStep(g, 1, dUP, e.repeat);
+        else if (sub) gatedStep(g, 0, dUP, e.repeat);
         return;
       case "KeyS":
+        if (e.shiftKey && p2max) gatedStep(g, 1, dRIGHT, e.repeat); // legacy S=right
+        else if (p2max) gatedStep(g, 1, dDOWN, e.repeat);
+        else if (sub) gatedStep(g, 0, dDOWN, e.repeat);
+        return;
       case "KeyZ":
-        if (e.shiftKey && e.code === "KeyS" && p2max) {
-          stepOrPan(g, 1, dRIGHT); // legacy S=right
-          return;
-        }
-        if (p2max) stepOrPan(g, 1, dDOWN);
-        else if (sub) stepOrPan(g, 0, dDOWN);
+        if (p2max) gatedStep(g, 1, dDOWN, e.repeat);
+        else if (sub) gatedStep(g, 0, dDOWN, e.repeat);
         return;
       case "KeyD":
-        if (p2max) stepOrPan(g, 1, dRIGHT);
-        else if (sub) stepOrPan(g, 0, dRIGHT);
+        if (p2max) gatedStep(g, 1, dRIGHT, e.repeat);
+        else if (sub) gatedStep(g, 0, dRIGHT, e.repeat);
         return;
       case "Space":
         if (p2max) {
@@ -290,6 +292,15 @@ async function main(): Promise<void> {
         break;
     }
   });
+
+  // Holding a movement key keeps stepping (throttled); other keys ignore repeat.
+  const lastStep: Record<number, number> = {};
+  function gatedStep(g: Engine, s: number, dir: Direction, isRepeat: boolean): void {
+    const now = performance.now();
+    if (!shouldMove(lastStep[s] ?? Number.NEGATIVE_INFINITY, now, isRepeat)) return;
+    lastStep[s] = now;
+    stepOrPan(g, s, dir);
+  }
 
   function stepOrPan(g: Engine, s: number, dir: Direction): void {
     if (g.blnView[s]) g.press(s, dir);
@@ -324,7 +335,7 @@ async function main(): Promise<void> {
 
   $("loadBtn").addEventListener("click", () => void loadLevel(levelSelect.value));
   $("restartBtn").addEventListener("click", () => void loadLevel(current));
-  $("suicideBtn").addEventListener("click", () => active().suicide(0));
+  $("starveBtn").addEventListener("click", () => active().suicide(0));
 
   await loadLevel("Level0");
 }

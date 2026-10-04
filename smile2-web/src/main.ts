@@ -1,6 +1,7 @@
 import { SoundBank } from "./audio";
 import { TICK_MS, VIEW_RADIUS, TILE_PX, dDOWN, dLEFT, dRIGHT, dUP } from "./constants";
 import { Engine } from "./engine";
+import { shouldMove } from "./input";
 import { parseLevelText } from "./level-format";
 import { renderPlayer } from "./renderer";
 import { loadAllImages, type ImageCache } from "./sprites";
@@ -107,32 +108,40 @@ async function main(): Promise<void> {
   }, 1000);
 
   // --- input (PB_KeyDown port) ---
-  // P1: Arrows + End(suicide) + ScrollLock(view). P2: WASD + Esc + Space.
+  // P1: Arrows + End(restart) + ScrollLock(view). P2: WASD + Esc(restart) + Space.
   // Legacy note: original P2 used S=right/Z=down; we use modern WASD
   // (S=down, D=right) and keep Z as a down-alias.
-  const keyForP2Right = new Set(["KeyS", "KeyD"]);
+  // Holding a movement key keeps stepping (throttled); other keys ignore repeat.
+  const lastStep: Record<number, number> = {};
+  function gatedStep(s: number, dir: 1 | 2 | 3 | 4, isRepeat: boolean): void {
+    const now = performance.now();
+    if (!shouldMove(lastStep[s] ?? Number.NEGATIVE_INFINITY, now, isRepeat)) return;
+    lastStep[s] = now;
+    stepOrPan(s, dir);
+  }
   window.addEventListener("keydown", (e) => {
-    if (e.repeat) {
-      if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Space"].includes(e.code)) e.preventDefault();
+    const movement = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyW", "KeyS", "KeyZ", "KeyD"].includes(e.code);
+    if (e.repeat && !movement) {
+      if (e.code === "Space") e.preventDefault();
       return;
     }
     const p1max = eng.numPlayers >= 1;
     const p2max = eng.numPlayers >= 2;
     switch (e.code) {
       case "ArrowLeft":
-        if (p1max) stepOrPan(0, dLEFT);
+        if (p1max) gatedStep(0, dLEFT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowUp":
-        if (p1max) stepOrPan(0, dUP);
+        if (p1max) gatedStep(0, dUP, e.repeat);
         e.preventDefault();
         return;
       case "ArrowRight":
-        if (p1max) stepOrPan(0, dRIGHT);
+        if (p1max) gatedStep(0, dRIGHT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowDown":
-        if (p1max) stepOrPan(0, dDOWN);
+        if (p1max) gatedStep(0, dDOWN, e.repeat);
         e.preventDefault();
         return;
       case "End":
@@ -142,24 +151,24 @@ async function main(): Promise<void> {
         if (p1max) eng.toggleView(0);
         return;
       case "KeyA":
-        if (p2max) stepOrPan(1, dLEFT);
+        if (p2max) gatedStep(1, dLEFT, e.repeat);
         return;
       case "KeyW":
-        if (p2max) stepOrPan(1, dUP);
+        if (p2max) gatedStep(1, dUP, e.repeat);
         return;
       case "KeyS":
+        // KeyS: modern down (legacy S was right — see README); Shift+S is legacy right.
+        if (e.shiftKey && p2max) gatedStep(1, dRIGHT, e.repeat);
+        else if (p2max) gatedStep(1, dDOWN, e.repeat);
+        return;
       case "KeyZ":
-        // KeyS: modern down (legacy S was right — see README).
-        if (p2max) stepOrPan(1, dDOWN);
+        if (p2max) gatedStep(1, dDOWN, e.repeat);
         return;
       case "KeyD":
-        if (p2max) stepOrPan(1, dRIGHT);
+        if (p2max) gatedStep(1, dRIGHT, e.repeat);
         return;
       case "Space":
-        if (p2max && !p1max) {
-          eng.toggleView(1);
-          e.preventDefault();
-        } else if (p2max) {
+        if (p2max) {
           eng.toggleView(1);
           e.preventDefault();
         }
@@ -171,12 +180,7 @@ async function main(): Promise<void> {
         void loadLevel(current);
         return;
       default:
-        // Legacy P2 right on S: if the player holds Shift+S treat as legacy right.
-        if (e.code === "KeyS" && e.shiftKey && p2max) {
-          stepOrPan(1, dRIGHT);
-          return;
-        }
-        void keyForP2Right;
+        break;
     }
   });
 
@@ -213,7 +217,7 @@ async function main(): Promise<void> {
 
   $("loadBtn").addEventListener("click", () => void loadLevel(levelSelect.value));
   $("restartBtn").addEventListener("click", () => void loadLevel(current));
-  $("suicideBtn").addEventListener("click", () => eng.suicide(0));
+  $("starveBtn").addEventListener("click", () => eng.suicide(0));
 
   await loadLevel("Level0");
 }

@@ -71,6 +71,24 @@ describe("engine movement", () => {
     expect([eng.smileX[0], eng.smileY[0]]).toEqual([1, 1]);
   });
 
+  it("keeps the camera on the smile after stepping", () => {
+    const t = toyLevel();
+    t.perm[2]![1]!.value = NOWT;
+    const eng = engineWith(t);
+    eng.viewX[0] = 0;
+    eng.viewY[0] = 0; // stale camera
+    expect(eng.press(0, dRIGHT)).toBe(true);
+    expect([eng.viewX[0], eng.viewY[0]]).toEqual([eng.smileX[0], eng.smileY[0]]);
+  });
+
+  it("leaves a stale camera alone on a blocked step", () => {
+    const eng = engineWith();
+    eng.viewX[0] = 0;
+    eng.viewY[0] = 0;
+    expect(eng.press(0, dRIGHT)).toBe(false); // brick wall
+    expect([eng.viewX[0], eng.viewY[0]]).toEqual([0, 0]);
+  });
+
   it("collects money and scores", () => {
     const t = toyLevel();
     t.perm[2]![1]!.value = NOWT;

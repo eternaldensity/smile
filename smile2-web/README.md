@@ -29,8 +29,8 @@ npm run build            # typecheck + production build in dist/
 
 ## Controls
 
-- P1: **Arrows** move · **End** suicide · **ScrollLock** follow/pan
-- P2: **WASD** move · **Esc** suicide · **Space** follow/pan · **Z** also works as down
+- P1: **Arrows** move (hold to keep moving) · **End** starves (lose a life) · **ScrollLock** follow/pan
+- P2: **WASD** move (hold to keep moving) · **Esc** starves · **Space** follow/pan · **Z** also works as down
 - **Click** a neighbouring tile to step into it · **right-click** a tile to inspect it
 - **R** restart level
 
