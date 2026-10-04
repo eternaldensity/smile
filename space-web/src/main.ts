@@ -3,7 +3,7 @@ import { DOWN, LEFT, RIGHT, UP } from "./constants";
 import { Engine } from "./engine";
 import { fetchLevel } from "./levels";
 import { render } from "./renderer";
-import { paintSprites } from "./sprites";
+import { loadAllImages } from "./sprites";
 
 const LEVELS = Array.from({ length: 16 }, (_, i) => i + 1);
 const STEP_MS = 25;
@@ -21,7 +21,7 @@ async function main(): Promise<void> {
 
   const canvas = $("board") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d")!;
-  const sprites = paintSprites();
+  const sprites = await loadAllImages();
   const sounds = new SoundBank();
   const stars = await new Promise<HTMLImageElement | null>((resolve) => {
     const img = new Image();

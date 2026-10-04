@@ -1,11 +1,11 @@
 import { BOARD_PX, TILE_PX } from "./constants";
 import type { Engine } from "./engine";
-import { spriteFor, type SpriteMap } from "./sprites";
+import { spriteFor, type ImageCache } from "./sprites";
 
 /** Renders the 12x12 board over the starfield backdrop. */
 export function render(
   ctx: CanvasRenderingContext2D,
-  sprites: SpriteMap,
+  sprites: ImageCache,
   stars: HTMLImageElement | null,
   eng: Engine,
 ): void {

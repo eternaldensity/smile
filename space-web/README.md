@@ -38,14 +38,17 @@ rule resolves. Two findings baked in:
   warps are no-ops (VB would have crashed with error 91).
 - `levelb.frm` is an unused template, not in `SpaceGame.vbp` — skipped.
 
-## Assets: redrawn + synthesized (the originals are lost)
+## Assets: the originals were found (`../data/`)
 
-Only `stars.bmp` survived (used as the board backdrop, converted to PNG).
-The sprites and all 9 sounds lived at a hardcoded
-`c:\documents and settings\...\vb\data\` path, so sprites are redrawn
-vector-style on canvas (`src/sprites.ts`) and sounds are WebAudio synth
-cues (`src/audio.ts`: bang, thump, warp, wall, ecrash, skid, start,
-finish, magnet + spawn beep), with a mute toggle.
+The sprites and sounds lived at a hardcoded
+`c:\...\vb\data\` path — that folder turned up, so `scripts/convert-assets.mjs`
+converts the real thing: the 14 referenced BMP/ICO sprites (plus per-direction
+`0-3sign.ico` arrows) to `public/assets/sprites/*.png` and the 9 WAVs to
+`public/assets/sounds/*.ogg`. `stars.bmp` (the board backdrop) becomes
+`public/assets/stars.png`. Only files space actually references are converted;
+the rest of `data/` belongs to other games. `data/` itself (DLLs and all) is
+not committed — just the converted output, plus a `manifest.json` that the
+asset test verifies against disk.
 
 ## Controls
 

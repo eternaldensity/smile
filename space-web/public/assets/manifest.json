@@ -1,0 +1,34 @@
+{
+  "sprites": {
+    "0sign.ico": "assets/sprites/0sign.png",
+    "1sign.ico": "assets/sprites/1sign.png",
+    "2lock.ico": "assets/sprites/2lock.png",
+    "2sign.ico": "assets/sprites/2sign.png",
+    "3sign.ico": "assets/sprites/3sign.png",
+    "Lock.ico": "assets/sprites/Lock.png",
+    "bang.BMP": "assets/sprites/bang.png",
+    "bounce.BMP": "assets/sprites/bounce.png",
+    "brick.BMP": "assets/sprites/brick.png",
+    "door.BMP": "assets/sprites/door.png",
+    "enemy.BMP": "assets/sprites/enemy.png",
+    "magnet.BMP": "assets/sprites/magnet.png",
+    "metal.BMP": "assets/sprites/metal.png",
+    "panel.BMP": "assets/sprites/panel.png",
+    "roof.BMP": "assets/sprites/roof.png",
+    "ship.BMP": "assets/sprites/ship.png",
+    "sign.ico": "assets/sprites/sign.png",
+    "warp.BMP": "assets/sprites/warp.png",
+    "wood.BMP": "assets/sprites/wood.png"
+  },
+  "sounds": {
+    "bang.wav": "assets/sounds/bang.ogg",
+    "ecrash.wav": "assets/sounds/ecrash.ogg",
+    "finish.wav": "assets/sounds/finish.ogg",
+    "magnet.wav": "assets/sounds/magnet.ogg",
+    "skid.wav": "assets/sounds/skid.ogg",
+    "start.wav": "assets/sounds/start.ogg",
+    "thump.wav": "assets/sounds/thump.ogg",
+    "wall.wav": "assets/sounds/wall.ogg",
+    "warp.wav": "assets/sounds/warp.ogg"
+  }
+}
