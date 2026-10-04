@@ -257,7 +257,7 @@
 7,0,0,0,0,0,0,0,0,0,0,0
 7,0,0,0,0,0,0,0,0,0,0,0
 1,7
-"Radar's with black ends are not turned on.",3,7,#TRUE#
+"Radars with black ends are not turned on.",3,7,#TRUE#
 "They turn on when they point to another radar.",3,7,#TRUE#
 "Then they act as normal radars, blowing up when they don't point at a radar.",3,7,#TRUE#
 "The arials are radars that don't blow up.",4,7,#TRUE#
