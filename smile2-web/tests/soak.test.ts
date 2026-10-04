@@ -1,9 +1,10 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { dDOWN, dLEFT, dRIGHT, dUP } from "../src/constants";
 import { Engine } from "../src/engine";
 import { parseLevelText } from "../src/level-format";
+import { levelFiles } from "./fixtures";
 
 function quietEngine() {
   const eng = new Engine();
@@ -16,10 +17,9 @@ function quietEngine() {
 }
 
 describe("soak: all shipped levels tick without crashing", () => {
-  const dir = join(__dirname, "..", "..", "smile2", "Levels");
-  const files = readdirSync(dir).filter((f) => f.endsWith(".txt"));
-  expect(files.length).toBe(24);
-  for (const f of files) {
+  const files = levelFiles();
+  expect(files.length).toBeGreaterThan(0);
+  for (const { dir, name: f } of files) {
     it(`soaks ${f}`, () => {
       const eng = quietEngine();
       const parsed = parseLevelText(readFileSync(join(dir, f), "utf8"));

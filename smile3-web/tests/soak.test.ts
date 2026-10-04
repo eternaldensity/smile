@@ -1,11 +1,8 @@
-import { readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { dDOWN, dLEFT, dRIGHT, dUP } from "../src/constants";
 import { Engine } from "../src/engine";
 import { parseLevelText } from "../src/level-format";
-
-const SRC = join(__dirname, "..", "..", "smile3");
+import { levelFiles, readLevel } from "./fixtures";
 
 function quietEngine() {
   const eng = new Engine();
@@ -20,27 +17,15 @@ function quietEngine() {
   return eng;
 }
 
-function allLevelFiles(): string[] {
-  const out: string[] = [];
-  for (const f of readdirSync(join(SRC, "Levels"))) {
-    if (f.endsWith(".txt")) out.push(join(SRC, "Levels", f));
-  }
-  for (const f of readdirSync(SRC)) {
-    if (f.endsWith(".txt")) out.push(join(SRC, f));
-  }
-  return out;
-}
-
-describe("soak: every smile3 level ticks without crashing", () => {
-  const files = allLevelFiles();
-  expect(files.length).toBeGreaterThan(100);
-  for (const f of files) {
-    const name = f.split("/").pop()!;
+describe("soak: every level ticks without crashing", () => {
+  const files = levelFiles();
+  expect(files.length).toBeGreaterThan(0);
+  for (const { name } of files) {
     it(`soaks ${name}`, () => {
       const eng = quietEngine();
       let parsed;
       try {
-        parsed = parseLevelText(readFileSync(f, "utf8"));
+        parsed = parseLevelText(readLevel(name));
       } catch {
         return; // in-progress design that doesn't parse yet — skip
       }

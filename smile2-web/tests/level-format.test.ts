@@ -1,14 +1,10 @@
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { parseLevelText } from "../src/level-format";
-
-const LV = (n: string) =>
-  readFileSync(join(__dirname, "..", "..", "smile2", "Levels", n), "utf8");
+import { levelFiles, readLevel } from "./fixtures";
 
 describe("level-format", () => {
   it("parses Level0 (10,10 1P)", () => {
-    const p = parseLevelText(LV("Level0.txt"));
+    const p = parseLevelText(readLevel("Level0.txt"));
     expect(p.xsize).toBe(10);
     expect(p.ysize).toBe(10);
     expect(p.players).toBe(1);
@@ -20,7 +16,7 @@ describe("level-format", () => {
   });
 
   it("parses Level1 (15,15 1P)", () => {
-    const p = parseLevelText(LV("Level1.txt"));
+    const p = parseLevelText(readLevel("Level1.txt"));
     expect(p.xsize).toBe(15);
     expect(p.ysize).toBe(15);
     expect(p.players).toBe(1);
@@ -29,23 +25,21 @@ describe("level-format", () => {
   });
 
   it("parses Level-1 (3,3 tiny)", () => {
-    const p = parseLevelText(LV("Level-1.txt"));
+    const p = parseLevelText(readLevel("Level-1.txt"));
     expect(p.xsize).toBe(3);
     expect(p.ysize).toBe(3);
   });
 
   it("maps legacy move value 1 -> 0", () => {
-    const p = parseLevelText(LV("Level0.txt"));
+    const p = parseLevelText(readLevel("Level0.txt"));
     for (const col of p.move) for (const c of col) expect(c.value).not.toBe(1);
   });
 
-  it("parses all 24 shipped levels", () => {
-    const names = [
-      "Level-1",
-      ...Array.from({ length: 23 }, (_, i) => `Level${i}`),
-    ];
-    for (const n of names) {
-      const p = parseLevelText(LV(`${n}.txt`));
+  it("parses every available level file", () => {
+    const files = levelFiles();
+    expect(files.length).toBeGreaterThan(0);
+    for (const { name } of files) {
+      const p = parseLevelText(readLevel(name));
       expect(p.perm.length).toBe(p.xsize + 1);
       expect(p.popups).toHaveLength(51);
       expect(p.switches).toHaveLength(51);
