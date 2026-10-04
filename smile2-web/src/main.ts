@@ -108,9 +108,8 @@ async function main(): Promise<void> {
   }, 1000);
 
   // --- input (PB_KeyDown port) ---
-  // P1: Arrows + End(restart) + ScrollLock(view). P2: WASD + Esc(restart) + Space.
-  // Legacy note: original P2 used S=right/Z=down; we use modern WASD
-  // (S=down, D=right) and keep Z as a down-alias.
+  // P1: WASD + End(starve) + ScrollLock(view). P2: Arrows + Esc(starve) + Space.
+  // (The VB original had movement swapped: arrows P1, A/W/S/Z P2 with S=right.)
   // Holding a movement key keeps stepping (throttled); other keys ignore repeat.
   const lastStep: Record<number, number> = {};
   function gatedStep(s: number, dir: 1 | 2 | 3 | 4, isRepeat: boolean): void {
@@ -120,7 +119,7 @@ async function main(): Promise<void> {
     stepOrPan(s, dir);
   }
   window.addEventListener("keydown", (e) => {
-    const movement = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyW", "KeyS", "KeyZ", "KeyD"].includes(e.code);
+    const movement = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyW", "KeyS", "KeyD"].includes(e.code);
     if (e.repeat && !movement) {
       if (e.code === "Space") e.preventDefault();
       return;
@@ -129,19 +128,19 @@ async function main(): Promise<void> {
     const p2max = eng.numPlayers >= 2;
     switch (e.code) {
       case "ArrowLeft":
-        if (p1max) gatedStep(0, dLEFT, e.repeat);
+        if (p2max) gatedStep(1, dLEFT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowUp":
-        if (p1max) gatedStep(0, dUP, e.repeat);
+        if (p2max) gatedStep(1, dUP, e.repeat);
         e.preventDefault();
         return;
       case "ArrowRight":
-        if (p1max) gatedStep(0, dRIGHT, e.repeat);
+        if (p2max) gatedStep(1, dRIGHT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowDown":
-        if (p1max) gatedStep(0, dDOWN, e.repeat);
+        if (p2max) gatedStep(1, dDOWN, e.repeat);
         e.preventDefault();
         return;
       case "End":
@@ -151,21 +150,16 @@ async function main(): Promise<void> {
         if (p1max) eng.toggleView(0);
         return;
       case "KeyA":
-        if (p2max) gatedStep(1, dLEFT, e.repeat);
+        if (p1max) gatedStep(0, dLEFT, e.repeat);
         return;
       case "KeyW":
-        if (p2max) gatedStep(1, dUP, e.repeat);
+        if (p1max) gatedStep(0, dUP, e.repeat);
         return;
       case "KeyS":
-        // KeyS: modern down (legacy S was right — see README); Shift+S is legacy right.
-        if (e.shiftKey && p2max) gatedStep(1, dRIGHT, e.repeat);
-        else if (p2max) gatedStep(1, dDOWN, e.repeat);
-        return;
-      case "KeyZ":
-        if (p2max) gatedStep(1, dDOWN, e.repeat);
+        if (p1max) gatedStep(0, dDOWN, e.repeat);
         return;
       case "KeyD":
-        if (p2max) gatedStep(1, dRIGHT, e.repeat);
+        if (p1max) gatedStep(0, dRIGHT, e.repeat);
         return;
       case "Space":
         if (p2max) {

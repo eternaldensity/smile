@@ -39,8 +39,9 @@ npm run build            # typecheck + production build in dist/
 
 ## Controls
 
-- P1: **Arrows** move (hold to keep moving) · **End** starves (lose a life) · **ScrollLock** follow/pan
-- P2: **WASD** move (hold to keep moving) · **Esc** starves · **Space** follow/pan · **Z** also down
+- P1: **WASD** move (hold to keep moving) · **End** starves (lose a life) · **ScrollLock** follow/pan
+- P2: **Arrows** move (hold to keep moving) · **Esc** starves · **Space** follow/pan
+- (The VB original had movement swapped: arrows P1, A/W/S/Z P2 with S=right.)
 - **Click** a neighbouring tile to step · **right-click** to inspect
 - **R** restart (restarts the sublevel when inside one)
 - Toll gates open a Pay/Decline dialog (Enter/Esc); the sim pauses meanwhile.
@@ -68,7 +69,7 @@ Intentional deviations (same policy as smile2-web):
 3. Subpaths are absolute Windows paths in the originals — resolved by
    basename against the game's own `levels/` dir; missing files keep the gate
    shut with a message instead of crashing.
-4. P2 movement modernized to WASD (original S=right/Z=down); Shift+S steps
-   right for old muscle memory.
+4. Movement is standard WASD for P1 and arrows for P2 (the original had
+   these swapped: arrows P1, A/W/S/Z P2 with S=right).
 5. Recursion (`MoveObjectCheck`/`MakeThingFromSwitch`/`CheckMince`) and all
    sprite lookups are guarded; the original crashed on bad indices.

@@ -215,7 +215,7 @@ async function main(): Promise<void> {
       e.preventDefault();
       return;
     }
-    const movement = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyW", "KeyS", "KeyZ", "KeyD"].includes(e.code);
+    const movement = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "KeyA", "KeyW", "KeyS", "KeyD"].includes(e.code);
     if (e.repeat && !movement) {
       if (e.code === "Space") e.preventDefault();
       return;
@@ -226,19 +226,23 @@ async function main(): Promise<void> {
     const anyP = sub ? g.numPlayers >= 1 : p1max;
     switch (e.code) {
       case "ArrowLeft":
-        if (anyP) gatedStep(g, 0, dLEFT, e.repeat);
+        if (p2max) gatedStep(g, 1, dLEFT, e.repeat);
+        else if (sub) gatedStep(g, 0, dLEFT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowUp":
-        if (anyP) gatedStep(g, 0, dUP, e.repeat);
+        if (p2max) gatedStep(g, 1, dUP, e.repeat);
+        else if (sub) gatedStep(g, 0, dUP, e.repeat);
         e.preventDefault();
         return;
       case "ArrowRight":
-        if (anyP) gatedStep(g, 0, dRIGHT, e.repeat);
+        if (p2max) gatedStep(g, 1, dRIGHT, e.repeat);
+        else if (sub) gatedStep(g, 0, dRIGHT, e.repeat);
         e.preventDefault();
         return;
       case "ArrowDown":
-        if (anyP) gatedStep(g, 0, dDOWN, e.repeat);
+        if (p2max) gatedStep(g, 1, dDOWN, e.repeat);
+        else if (sub) gatedStep(g, 0, dDOWN, e.repeat);
         e.preventDefault();
         return;
       case "End":
@@ -248,24 +252,19 @@ async function main(): Promise<void> {
         if (anyP) g.toggleView(0);
         return;
       case "KeyA":
-        if (p2max) gatedStep(g, 1, dLEFT, e.repeat);
+        if (p1max) gatedStep(g, 0, dLEFT, e.repeat);
         else if (sub) gatedStep(g, 0, dLEFT, e.repeat);
         return;
       case "KeyW":
-        if (p2max) gatedStep(g, 1, dUP, e.repeat);
+        if (p1max) gatedStep(g, 0, dUP, e.repeat);
         else if (sub) gatedStep(g, 0, dUP, e.repeat);
         return;
       case "KeyS":
-        if (e.shiftKey && p2max) gatedStep(g, 1, dRIGHT, e.repeat); // legacy S=right
-        else if (p2max) gatedStep(g, 1, dDOWN, e.repeat);
-        else if (sub) gatedStep(g, 0, dDOWN, e.repeat);
-        return;
-      case "KeyZ":
-        if (p2max) gatedStep(g, 1, dDOWN, e.repeat);
+        if (p1max) gatedStep(g, 0, dDOWN, e.repeat);
         else if (sub) gatedStep(g, 0, dDOWN, e.repeat);
         return;
       case "KeyD":
-        if (p2max) gatedStep(g, 1, dRIGHT, e.repeat);
+        if (p1max) gatedStep(g, 0, dRIGHT, e.repeat);
         else if (sub) gatedStep(g, 0, dRIGHT, e.repeat);
         return;
       case "Space":
@@ -293,6 +292,8 @@ async function main(): Promise<void> {
     }
   });
 
+  // Input: P1 moves with WASD, P2 with Arrows (VB original had these swapped).
+  // End/Esc starve, ScrollLock/Space toggle follow-cam, R restarts.
   // Holding a movement key keeps stepping (throttled); other keys ignore repeat.
   const lastStep: Record<number, number> = {};
   function gatedStep(g: Engine, s: number, dir: Direction, isRepeat: boolean): void {

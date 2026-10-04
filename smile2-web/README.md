@@ -29,14 +29,12 @@ npm run build            # typecheck + production build in dist/
 
 ## Controls
 
-- P1: **Arrows** move (hold to keep moving) · **End** starves (lose a life) · **ScrollLock** follow/pan
-- P2: **WASD** move (hold to keep moving) · **Esc** starves · **Space** follow/pan · **Z** also works as down
+- P1: **WASD** move (hold to keep moving) · **End** starves (lose a life) · **ScrollLock** follow/pan
+- P2: **Arrows** move (hold to keep moving) · **Esc** starves · **Space** follow/pan
+- (The VB original had movement swapped: arrows P1, A/W/S/Z P2 with S=right;
+- no legacy aliases are kept.)
 - **Click** a neighbouring tile to step into it · **right-click** a tile to inspect it
 - **R** restart level
-
-Legacy note: the original P2 bindings were A=left/W=up/**S=right**/**Z=down**.
-This remake uses modern WASD (S=down, D=right) and keeps Z as a down-alias;
-Shift+S still steps right for old muscle memory. Documented, not silent.
 
 ## Project structure
 
@@ -79,7 +77,8 @@ Intentional deviations:
    auto-advance on complete).
 3. **Recursion guards.** `MoveObjectCheck`/`MakeThingFromSwitch` recurse in VB;
    guarded at 64/16 depth so hostile levels can't overflow the stack.
-4. **P2 movement** modernized to WASD (above); P1 unchanged.
+4. **Movement** is standard WASD for P1 and arrows for P2 (above); the
+   original had these swapped.
 5. **Water/warp animation** uses `floor(WIndex/5)`; VB's float array index
    rounded, visually equivalent.
 
