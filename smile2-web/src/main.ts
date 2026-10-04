@@ -4,7 +4,7 @@ import { Engine } from "./engine";
 import { shouldMove } from "./input";
 import { parseLevelText } from "./level-format";
 import { renderPlayer } from "./renderer";
-import { loadAllImages, type ImageCache } from "./sprites";
+import { KEY_NAMES, SPRITES, loadAllImages, type ImageCache } from "./sprites";
 
 const LEVELS = [
   "Level-1",
@@ -64,6 +64,24 @@ async function main(): Promise<void> {
   };
   eng.events.hudChanged = updateHud;
 
+  // Key inventory: one slot per key color, lit when held (like VB's picKeys
+  // strip, but all six slots stay visible so the set is always clear).
+  const keyImgs: HTMLImageElement[][] = [[], []];
+  for (let s = 0; s < 2; s++) {
+    const strip = $("keys" + s);
+    strip.classList.add("keys");
+    strip.textContent = "";
+    for (let k = 1; k <= 6; k++) {
+      const img = document.createElement("img");
+      img.src = SPRITES.key[k]!;
+      img.alt = `${KEY_NAMES[k]} key`;
+      img.title = `${KEY_NAMES[k]} key`;
+      img.classList.add("missing");
+      strip.appendChild(img);
+      keyImgs[s]!.push(img);
+    }
+  }
+
   function updateHud(): void {
     for (let s = 0; s < 2; s++) {
       const vis = s < eng.numPlayers;
@@ -72,9 +90,9 @@ async function main(): Promise<void> {
       $("score" + s).textContent = `$${eng.score[s] ?? 0}`;
       $("energy" + s).textContent = `${eng.energy[s] ?? 0} Kj${eng.waterSafe[s] ? " 🏊" : ""}`;
       $("lives" + s).textContent = `${eng.lives[s] ?? 0} ❤${eng.dead[s] ? " (out)" : ""}`;
-      const got: string[] = [];
-      for (let k = 1; k <= 6; k++) if (eng.keys[k]?.[s]) got.push(`K${k}`);
-      $("keys" + s).textContent = got.join(" ") || "no keys";
+      for (let k = 1; k <= 6; k++) {
+        keyImgs[s]![k - 1]!.classList.toggle("missing", !eng.keys[k]?.[s]);
+      }
     }
   }
 

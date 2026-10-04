@@ -34,6 +34,9 @@ export function radarSprite(frame: number, dir: number): string {
   return `${B}assets/radar/radar${f}.png`;
 }
 
+/** Key colors as the popups name them (key1..key6 sprites). */
+export const KEY_NAMES = ["", "blue", "yellow", "red", "green", "black", "silver"];
+
 export type ImageCache = Map<string, HTMLImageElement>;
 
 export async function loadAllImages(): Promise<ImageCache> {

@@ -10,7 +10,10 @@ main { display: flex; gap: 16px; }
 #boards { display: flex; gap: 16px; }
 .board-wrap canvas { background: #fff; image-rendering: pixelated; border: 2px solid #444; }
 .board-wrap.hidden { display: none; }
-.hud { display: flex; gap: 12px; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.hud { display: flex; gap: 12px; margin-top: 6px; font-variant-numeric: tabular-nums; align-items: center; }
+.keys { display: inline-flex; gap: 2px; }
+.keys img { width: 22px; height: 22px; image-rendering: pixelated; }
+.keys img.missing { opacity: 0.18; filter: grayscale(1); }
 #side { max-width: 320px; }
 #message { min-height: 2em; margin-bottom: 8px; color: #ffd75e; }
 #whatsthere { min-height: 1.5em; margin-bottom: 8px; color: #9fd3ff; }

@@ -4,7 +4,7 @@ import { Engine, type SubResult } from "./engine";
 import { shouldMove } from "./input";
 import { parseLevelText, subpathToName } from "./level-format";
 import { renderPlayer } from "./renderer";
-import { loadAllImages, type ImageCache } from "./sprites";
+import { KEY_NAMES, SPRITES, loadAllImages, type ImageCache } from "./sprites";
 
 const LEVELS = ["Level-1", "Level0", "Level1", "Level2", "Level3", "Level4"];
 
@@ -78,6 +78,30 @@ async function main(): Promise<void> {
   };
   eng.events.subComplete = () => {};
 
+  // Key inventory: one slot per key color, lit when held (like VB's picKeys
+  // strip, but all six slots stay visible so the set is always clear).
+  function buildKeyStrip(el: HTMLElement): HTMLImageElement[] {
+    el.classList.add("keys");
+    el.textContent = "";
+    const imgs: HTMLImageElement[] = [];
+    for (let k = 1; k <= 6; k++) {
+      const img = document.createElement("img");
+      img.src = SPRITES.key[k]!;
+      img.alt = `${KEY_NAMES[k]} key`;
+      img.title = `${KEY_NAMES[k]} key`;
+      img.classList.add("missing");
+      el.appendChild(img);
+      imgs.push(img);
+    }
+    return imgs;
+  }
+  const keyImgs = [$("keys0"), $("keys1")].map((el) => buildKeyStrip(el));
+  const keyImgsSub = buildKeyStrip($("keysSub"));
+
+  function paintKeys(imgs: HTMLImageElement[], get: (k: number) => boolean): void {
+    for (let k = 1; k <= 6; k++) imgs[k - 1]!.classList.toggle("missing", !get(k));
+  }
+
   function updateHud(): void {
     for (let s = 0; s < 2; s++) {
       const vis = s < eng.numPlayers;
@@ -87,9 +111,7 @@ async function main(): Promise<void> {
       $("energy" + s).textContent = `${eng.energy[s] ?? 0} Kj${eng.waterSafe[s] ? " 🏊" : ""}`;
       $("lives" + s).textContent = `${eng.lives[s] ?? 0} ❤${eng.dead[s] ? " (out)" : ""}`;
       $("shield" + s).textContent = `${eng.shields[s] ?? 0}S 🛡`;
-      const got: string[] = [];
-      for (let k = 1; k <= 6; k++) if (eng.keys[k]?.[s]) got.push(`K${k}`);
-      $("keys" + s).textContent = got.join(" ") || "no keys";
+      paintKeys(keyImgs[s]!, (k) => !!eng.keys[k]?.[s]);
     }
   }
 
@@ -99,9 +121,7 @@ async function main(): Promise<void> {
     $("energySub").textContent = `${seng.energy[s] ?? 0} Kj`;
     $("livesSub").textContent = `${seng.lives[s] ?? 0} ❤`;
     $("shieldSub").textContent = `${seng.shields[s] ?? 0}S 🛡`;
-    const got: string[] = [];
-    for (let k = 1; k <= 6; k++) if (seng.keys[k]?.[s]) got.push(`K${k}`);
-    $("keysSub").textContent = got.join(" ") || "no keys";
+    paintKeys(keyImgsSub, (k) => !!seng.keys[k]?.[s]);
   }
 
   async function loadLevel(name: string): Promise<void> {
